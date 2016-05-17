@@ -29,28 +29,38 @@ usage () {
     echo ""
 }
 
+epm_execute () {
+    epm_op=$1
+    shift
+    if [ $# -eq 0 ];then
+        $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el --eval "($epm_op)"
+    else
+        $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el --eval "($epm_op \"$@\")"
+    fi
+}
+
 list () {
-    $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el -f epm-list
+    epm_execute epm-list
 }
 
 install () {
-    $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el --eval "(epm-install \"$1\")"
+    epm_execute epm-install $1
 }
 
 delete () {
-    $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el --eval "(epm-delete \"$1\")"
+    epm_execute epm-delete $1
 }
 
 refresh () {
-    $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el -f package-refresh-contents
+    epm_execute package-refresh-contents
 }
 
 info () {
-    $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el --eval "(epm-info \"$1\")"
+    epm_execute epm-info $1
 }
 
 search () {
-    $EMACS -Q --batch -l $EPM_DIRECTORY/epm.el --eval "(epm-search \"$1\")"
+    epm_execute epm-search $1
 }
 
 # TODO outdated
